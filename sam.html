@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>삼국지 인물 성격 테스트</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: radial-gradient(circle at top, #fdf6e3 0, #f5f5f5 45%, #eeeeee 100%);
+      color: #222;
+    }
+
+    .page {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    header {
+      text-align: center;
+      padding: 24px 12px 16px;
+    }
+
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+    }
+
+    header p {
+      margin: 0;
+      color: #555;
+      font-size: 0.95rem;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .ad-slot {
+      border-radius: 12px;
+      border: 1px dashed #ccc;
+      background: #fafafa;
+      color: #777;
+      font-size: 0.85rem;
+      padding: 12px;
+      text-align: center;
+      margin: 12px 0;
+    }
+
+    .ad-slot span {
+      font-weight: 600;
+    }
+
+    .quiz-meta {
+      font-size: 0.85rem;
+      color: #777;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.75rem;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: #f3f4ff;
+      color: #3f51b5;
+    }
+
+    .question {
+      padding: 16px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .question:last-of-type {
+      border-bottom: none;
+    }
+
+    .question-title {
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+    }
+
+    .options {
+      display: grid;
+      gap: 6px;
+    }
+
+    .option-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.05s ease;
+    }
+
+    .option-label:hover {
+      background: #f4f4ff;
+      transform: translateY(-1px);
+    }
+
+    .option-label input {
+      margin-top: 3px;
+      flex-shrink: 0;
+    }
+
+    .option-text {
+      font-size: 0.9rem;
+    }
+
+    .actions {
+      margin-top: 16px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 10px 18px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 600;
+      transition: transform 0.05s ease, box-shadow 0.1s ease, opacity 0.15s ease;
+    }
+
+    button:active {
+      transform: translateY(1px);
+      box-shadow: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #ffb300, #ff6f00);
+      color: #fff;
+      box-shadow: 0 6px 14px rgba(255, 111, 0, 0.4);
+    }
+
+    .btn-secondary {
+      background: #f5f5f5;
+      color: #444;
+    }
+
+    .warning {
+      margin-top: 8px;
+      font-size: 0.85rem;
+      color: #d32f2f;
+      display: none;
+    }
+
+    .result {
+      display: none;
+      margin-top: 16px;
+    }
+
+    .result-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .result-subtitle {
+      font-size: 0.9rem;
+      color: #777;
+      margin-bottom: 12px;
+    }
+
+    .result-tagline {
+      display: inline-block;
+      font-size: 0.8rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #fff8e1;
+      color: #ff6f00;
+      margin-bottom: 10px;
+    }
+
+    .result-body {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: #444;
+    }
+
+    .result-body p {
+      margin: 0 0 8px;
+    }
+
+    .result-body ul {
+      padding-left: 18px;
+      margin: 6px 0 0;
+      font-size: 0.88rem;
+    }
+
+    .share-hint {
+      margin-top: 12px;
+      font-size: 0.8rem;
+      color: #666;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.75rem;
+      color: #888;
+      padding: 18px 0 30px;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 1.6rem;
+      }
+      .card {
+        padding: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <h1>나는 어떤 삼국지 인물일까?</h1>
+      <p>간단한 질문에 답하면, 내 성격과 가장 비슷한 삼국지 인물을 알려드립니다.</p>
+    </header>
+
+    <!-- 상단 광고 영역 -->
+    <div class="ad-slot">
+      <span>광고 영역</span> (예: 728 x 90 배너)
+      <!-- 여기 ad script 삽입 -->
+    </div>
+
+    <main>
+      <section class="card" id="quiz-card">
+        <div class="quiz-meta">
+          <div class="badge">⚔ 삼국지 성격 테스트</div>
+          <div>질문 수: 8문항 · 소요시간: 약 2분</div>
+        </div>
+
+        <form id="quiz-form">
+          <!-- Q1 -->
+          <div class="question">
+            <div class="question-title">1. 팀 프로젝트에서 나는 어떤 역할을 맡는 편인가요?</div>
+            <div class="options">
+              <label class="option-label">
+                <input type="radio" name="q1" value="yu" />
+                <div class="option-text">사람들을 잘 챙기고 중재하면서 모두가 편하게 일하도록 분위기를 만든다.</div>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="q1" value="guan" />
+                <div class="option-text">정해진 목표를 조용히 끝까지 밀어붙이는 든든한 실무 담당.</div>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="q1" value="zhang" />
+                <div class="option-text">직설적이고, 답답하면 직접 나서서 밀어붙이는 추진력 담당.</div>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="q1" value="cao" />
+                <div class="option-text">전략을 짜고, 효율적으로 인력을 배치하는 리더 역할.</div>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="q1" value="zhuge" />
+                <div class="option-text">한 발 물러나 전체 계획을 설계하고 리스크를 계산하는 전략가.</div>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="q1" value="sun" />
+                <div class="option-text">각자의 의견을 듣고 균형을 맞추는 조정자, 협업을 중요하게 여김.</div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Q2 -->
+          <div class="question">
+            <div class="question-title">2. 갈등 상황에서 나는?</div>
+            <div class="options">
+              <label class="option-label">
+                <input type="radio" name="q2" value="yu" />
+                <div class="option-text">모두가 상처받지 않는 방향으로 타협점을 찾으려 한다.</div>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="q2" value="guan" />
+                <div class="option-text">의리를 지키는 게 가장 중요하다. 내 사람 편을 든다.</div>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="q2" value="zhang" />
+                <div class="option-text">할 말은 한다. 불공정하면 끝까지 싸우는 스타일이다.</div>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="q2" value="cao" />
+                <div class="option-text">냉정하게 득과 실을 계산해 가장 이득인 선택을 한다.</div>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="q2" value="zhuge" />
+                <div class="option-text">감정에 휘둘리지 않고, 상황을 객관적으로 분석해 해결책을 제시한다.</div>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="q2" value="sun" />
+                <div class="option-text">양쪽 이야기를 다 들어보고, 관계가 완전히 틀어지지 않게 조정한다.</div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Q3 -->
+          <div class="question">
+            <div class="question-title">3. 나의 의사결정 스타일에 가장 가까운 것은?</div>
+            <div class="options">
+              <label class="option-label">
+                <input type="radio" name="q3" value="yu" />
+                <div class="option-text">사람들의 감정과 관계를 고려하면서 천천히 결정한다.</div>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="q3" value="guan" />
+                <div class="option-text">한번 마음을 정하면 쉽게 흔들리지 않는다.</div>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="q3" value="zhang" />
+                <div class="option-text">직감에 따라 빠르게 결정하고 실행한다.</div>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="q3" value="cao" />
+                <div class="option-text">정보를 최대한 모아 놓고, 가장 효율적인 선택을 한다.</div>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="q3" value="zhuge" />
+                <div class="option-text">여러 시나리오를 머릿속에서 시뮬레이션해 보고 결정한다.</div>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="q3" value="sun" />
+                <div class="option-text">주변의 조언을 듣고, 중간 지점을 찾는 편이다.</div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Q4 -->
+          <div class="question">
+            <div class="question-title">4. 아래 중 가장 끌리는 말은?</div>
+            <div class="options">
+              <label class="option-label">
+                <input type="radio" name="q4" value="yu" />
+                <div class="option-text">“사람이 곧 힘이다.”</div>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="q4" value="guan" />
+                <div class="option-text">“의리는 끝까지 지킨다.”</div>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="q4" value="zhang" />
+                <div class="option-text">“참고 있으면 병 난다. 할 말은 하자.”</div>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="q4" value="cao" />
+                <div class="option-text">“승자가 기준을 정한다.”</div>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="q4" value="zhuge" />
+                <div class="option-text">“모든 일에는 타이밍이 있다.”</div>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="q4" value="sun" />
+                <div class="option-text">“균형이 깨지면 모든 것이 무너진다.”</div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Q5 -->
+          <div class="question">
+            <div class="question-title">5. 나의 단점에 가장 가까운 것은?</div>
+            <div class="options">
+              <label class="option-label">
+                <input type="radio" name="q5" value="yu" />
+                <div class="option-text">결정을 미루다가 타이밍을 놓칠 때가 있다.</div>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="q5" value="guan" />
+                <div class="option-text">원칙과 의리를 지나치게 중시해 융통성이 부족해 보일 때가 있다.</div>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="q5" value="zhang" />
+                <div class="option-text">감정이 앞서서 욱하거나 말이 거칠어질 때가 있다.</div>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="q5" value="cao" />
+                <div class="option-text">너무 계산적인 사람처럼 보일 때가 있다.</div>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="q5" value="zhuge" />
+                <div class="option-text">완벽을 추구하다가 스스로를 지치게 만들 때가 있다.</div>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="q5" value="sun" />
+                <div class="option-text">갈등이 싫어서 내 의견을 강하게 밀어붙이지 못할 때가 있다.</div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Q6 -->
+          <div class="question">
+            <div class="question-title">6. 이상적인 휴일을 고른다면?</div>
+            <div class="options">
+              <label class="option-label">
+                <input type="radio" name="q6" value="yu" />
+                <div class="option-text">가족이나 친구들과 함께 맛있는 거 먹고 수다 떨기.</div>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="q6" value="guan" />
+                <div class="option-text">운동, 자기계발 등 나를 단단하게 만드는 시간 보내기.</div>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="q6" value="zhang" />
+                <div class="option-text">즉흥 여행, 번쩍 떠나서 신나는 경험 하기.</div>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="q6" value="cao" />
+                <div class="option-text">앞으로의 계획을 정리하고 목표를 세우는 시간.</div>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="q6" value="zhuge" />
+                <div class="option-text">혼자만의 시간, 책이나 영상 보면서 머릿속 정리.</div>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="q6" value="sun" />
+                <div class="option-text">가볍게 사람도 만나고, 혼자만의 시간도 가지는 적당한 밸런스.</div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Q7 -->
+          <div class="question">
+            <div class="question-title">7. 함께 있고 싶은 사람 타입은?</div>
+            <div class="options">
+              <label class="option-label">
+                <input type="radio" name="q7" value="yu" />
+                <div class="option-text">따뜻하고 배려심 깊은 사람.</div>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="q7" value="guan" />
+                <div class="option-text">믿고 의지할 수 있는 든든한 사람.</div>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="q7" value="zhang" />
+                <div class="option-text">재밌고 솔직해서 같이 있으면 시간이 빨리 가는 사람.</div>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="q7" value="cao" />
+                <div class="option-text">똑똑하고 야망 있는 사람.</div>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="q7" value="zhuge" />
+                <div class="option-text">대화 수준이 맞고, 깊은 얘기가 통하는 사람.</div>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="q7" value="sun" />
+                <div class="option-text">편안하고 안정감을 주는 사람.</div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Q8 -->
+          <div class="question">
+            <div class="question-title">8. 내 인생에서 가장 중요하다고 느끼는 가치는?</div>
+            <div class="options">
+              <label class="option-label">
+                <input type="radio" name="q8" value="yu" />
+                <div class="option-text">사람과 관계, 신뢰.</div>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="q8" value="guan" />
+                <div class="option-text">의리, 책임, 신념.</div>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="q8" value="zhang" />
+                <div class="option-text">자유, 솔직함, 재미.</div>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="q8" value="cao" />
+                <div class="option-text">성공, 성취, 영향력.</div>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="q8" value="zhuge" />
+                <div class="option-text">지혜, 통찰, 의미.</div>
+              </label>
+              <label class="option-label">
+                <input type="radio" name="q8" value="sun" />
+                <div class="option-text">안정, 균형, 조화.</div>
+              </label>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button type="button" class="btn-primary" id="submit-btn">결과 보기</button>
+            <button type="button" class="btn-secondary" id="reset-btn">다시 고르기</button>
+          </div>
+          <div class="warning" id="warning-msg">모든 문항에 답을 선택해주세요.</div>
+        </form>
+
+        <!-- 중간 광고 영역 -->
+        <div class="ad-slot">
+          <span>광고 영역</span> (본문 중간 인피드 / 네이티브 광고)
+          <!-- 여기 ad script 삽입 -->
+        </div>
+
+        <div class="result" id="result-box">
+          <div class="result-title" id="result-title"></div>
+          <div class="result-subtitle" id="result-subtitle"></div>
+          <div class="result-tagline" id="result-tagline"></div>
+          <div class="result-body" id="result-body"></div>
+
+          <div class="actions" style="margin-top: 16px;">
+            <button type="button" class="btn-secondary" id="retry-btn">테스트 다시 하기</button>
+          </div>
+          <div class="share-hint">
+            친구에게도 공유해서, 누가 누군지 비교해 보세요 😄  
+            (URL 복사해서 카톡/디코 등에 붙여넣기!)
+          </div>
+        </div>
+      </section>
+
+      <!-- 하단 광고 영역 -->
+      <div class="ad-slot">
+        <span>광고 영역</span> (예: 320 x 100 모바일 배너 또는 전면 광고 트리거)
+        <!-- 여기 ad script 삽입 -->
+      </div>
+    </main>
+
+    <footer>
+      이 테스트 결과는 재미로 보는 용도이며, 실제 인성과는 다를 수 있습니다.<br />
+      © 삼국지 성격 테스트
+    </footer>
+  </div>
+
+  <script>
+    // 캐릭터별 결과 텍스트
+    const CHARACTER_RESULTS = {
+      yu: {
+        name: "유비 타입",
+        subtitle: "사람을 모으는 따뜻한 리더",
+        tagline: "“사람이 가장 큰 재산이다.”",
+        description: `
+          <p>당신은 사람을 중요하게 생각하고, 주변을 잘 챙기는 따뜻한 리더 타입입니다.</p>
+          <p>다소 우유부단해 보일 때도 있지만, 결국에는 모두가 최대한 상처받지 않는 방향을 찾으려 노력합니다.</p>
+          <ul>
+            <li>관계와 신뢰를 중시하는 성향</li>
+            <li>사람을 모으고 분위기를 만드는 능력</li>
+            <li>때로는 결정이 느리다는 이야기를 들을 수 있음</li>
+          </ul>
+        `
+      },
+      guan: {
+        name: "관우 타입",
+        subtitle: "의리와 신념으로 버티는 정직한 강자",
+        tagline: "“한 번 맺은 인연, 끝까지 지킨다.”",
+        description: `
+          <p>당신은 의리와 신뢰를 매우 중요하게 생각하는 사람입니다.</p>
+          <p>스스로 세운 기준이 분명하고, 한 번 마음먹은 일은 끝까지 밀어붙이는 강한 끈기를 가지고 있습니다.</p>
+          <ul>
+            <li>믿음직하고 책임감이 강한 스타일</li>
+            <li>원칙주의자로 보일 수 있음</li>
+            <li>가까운 사람들에게는 누구보다 든든한 존재</li>
+          </ul>
+        `
+      },
+      zhang: {
+        name: "장비 타입",
+        subtitle: "불같은 에너지의 솔직한 행동파",
+        tagline: "“답답하면 내가 한다!”",
+        description: `
+          <p>당신은 솔직하고 직선적인 에너지를 가진 사람입니다.</p>
+          <p>하기로 한 일은 시원하게 밀어붙이고, 불공정한 상황을 보면 그냥 넘기지 못하는 편입니다.</p>
+          <ul>
+            <li>추진력 넘치는 실천형 인간</li>
+            <li>감정 표현이 솔직해 호불호가 갈릴 수 있음</li>
+            <li>팀에 있을 때 분위기를 확 뒤집는 파워</li>
+          </ul>
+        `
+      },
+      cao: {
+        name: "조조 타입",
+        subtitle: "냉철한 판단의 전략적 현실주의자",
+        tagline: "“승리한 자가 기준이 된다.”",
+        description: `
+          <p>당신은 효율과 성과를 중시하는 현실적인 전략가 타입입니다.</p>
+          <p>때로는 차갑게 보일 수 있지만, 그만큼 상황을 냉정하게 바라보고 필요한 결정을 내릴 수 있습니다.</p>
+          <ul>
+            <li>판단이 빠르고 전략적인 사고를 잘함</li>
+            <li>감정보다는 결과를 우선시하는 편</li>
+            <li>리더 역할을 맡을 때 능력을 크게 발휘</li>
+          </ul>
+        `
+      },
+      zhuge: {
+        name: "제갈량 타입",
+        subtitle: "먼 미래까지 보는 지혜로운 설계자",
+        tagline: "“이미 여러 경우의 수를 계산해 두었다.”",
+        description: `
+          <p>당신은 한 발 물러서서 전체를 보는 시야를 가진 사람입니다.</p>
+          <p>계획을 세우고, 리스크를 분석하며, 최적의 선택지를 찾는 데에 강점이 있습니다.</p>
+          <ul>
+            <li>논리적이고 분석적인 사고력</li>
+            <li>완벽주의 성향으로 스스로를 몰아붙이기도 함</li>
+            <li>조언자·전략가 포지션에서 진가를 발휘</li>
+          </ul>
+        `
+      },
+      sun: {
+        name: "손권 타입",
+        subtitle: "균형 감각이 뛰어난 조정형 리더",
+        tagline: "“극단이 아닌 균형이 오래 간다.”",
+        description: `
+          <p>당신은 여러 의견을 들으며 균형점을 잘 찾는 사람입니다.</p>
+          <p>극단적인 선택보다는, 장기적으로 모두가 버틸 수 있는 타협점을 찾는 능력이 뛰어납니다.</p>
+          <ul>
+            <li>협상과 중재에 강한 스타일</li>
+            <li>갈등 상황에서 모두를 살리는 선택을 찾으려 함</li>
+            <li>가끔은 ‘애매하다’는 말을 들을 수 있지만, 실상은 안정적인 타입</li>
+          </ul>
+        `
+      }
+    };
+
+    const form = document.getElementById("quiz-form");
+    const submitBtn = document.getElementById("submit-btn");
+    const resetBtn = document.getElementById("reset-btn");
+    const retryBtn = document.getElementById("retry-btn");
+    const warningMsg = document.getElementById("warning-msg");
+    const resultBox = document.getElementById("result-box");
+    const resultTitle = document.getElementById("result-title");
+    const resultSubtitle = document.getElementById("result-subtitle");
+    const resultTagline = document.getElementById("result-tagline");
+    const resultBody = document.getElementById("result-body");
+
+    function getSelectedValues() {
+      const answers = {};
+      const totalQuestions = 8;
+
+      for (let i = 1; i <= totalQuestions; i++) {
+        const name = "q" + i;
+        const selected = form.querySelector(`input[name="${name}"]:checked`);
+        answers[name] = selected ? selected.value : null;
+      }
+      return answers;
+    }
+
+    function calculateResult(answers) {
+      const scores = {
+        yu: 0,
+        guan: 0,
+        zhang: 0,
+        cao: 0,
+        zhuge: 0,
+        sun: 0
+      };
+
+      Object.values(answers).forEach((value) => {
+        if (value && scores.hasOwnProperty(value)) {
+          scores[value] += 1;
+        }
+      });
+
+      let bestKey = null;
+      let bestScore = -1;
+      for (const [key, score] of Object.entries(scores)) {
+        if (score > bestScore) {
+          bestScore = score;
+          bestKey = key;
+        }
+      }
+
+      return bestKey;
+    }
+
+    function showResult(characterKey) {
+      const data = CHARACTER_RESULTS[characterKey];
+      if (!data) return;
+
+      resultTitle.textContent = data.name;
+      resultSubtitle.textContent = data.subtitle;
+      resultTagline.textContent = data.tagline;
+      resultBody.innerHTML = data.description;
+
+      resultBox.style.display = "block";
+      warningMsg.style.display = "none";
+
+      // 결과 쪽으로 스크롤
+      resultBox.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function resetQuiz() {
+      form.reset();
+      warningMsg.style.display = "none";
+      resultBox.style.display = "none";
+    }
+
+    submitBtn.addEventListener("click", () => {
+      const answers = getSelectedValues();
+      const missed = Object.values(answers).some((val) => val === null);
+
+      if (missed) {
+        warningMsg.style.display = "block";
+        resultBox.style.display = "none";
+        return;
+      }
+
+      const bestKey = calculateResult(answers);
+      showResult(bestKey);
+    });
+
+    resetBtn.addEventListener("click", resetQuiz);
+    retryBtn.addEventListener("click", resetQuiz);
+  </script>
+</body>
+</html>
