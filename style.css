@@ -1,0 +1,79 @@
+body{
+font-family:Arial;
+margin:0;
+background:#f5f5f5;
+}
+
+header{
+background:#111;
+color:white;
+text-align:center;
+padding:40px;
+}
+
+nav a{
+color:white;
+margin:0 15px;
+text-decoration:none;
+}
+
+.hero{
+text-align:center;
+padding:100px 20px;
+background:white;
+}
+
+.hero h2{
+font-size:40px;
+}
+
+#projects{
+padding:60px;
+text-align:center;
+}
+
+.project-grid{
+display:flex;
+justify-content:center;
+gap:25px;
+flex-wrap:wrap;
+}
+
+.card{
+background:white;
+width:280px;
+padding:25px;
+border-radius:10px;
+box-shadow:0 4px 10px rgba(0,0,0,0.1);
+transition:0.2s;
+}
+
+.card:hover{
+transform:translateY(-5px);
+}
+
+.card a{
+color:#0077ff;
+text-decoration:none;
+}
+
+#skills{
+background:white;
+text-align:center;
+padding:60px;
+}
+
+.skills span{
+display:inline-block;
+padding:10px 15px;
+margin:8px;
+background:#eee;
+border-radius:5px;
+}
+
+footer{
+background:#111;
+color:white;
+text-align:center;
+padding:20px;
+}
